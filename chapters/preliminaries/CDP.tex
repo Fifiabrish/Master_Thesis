@@ -1,0 +1,107 @@
+\section{محرمانگی تفاضلی متمرکز (\lr{CDP})}
+\label{sec:bg:cdp}
+
+مفهوم محرمانگی تفاضلی یا به اختصار \DP، اولین بار توسط دورک و همکاران \cite{dwork2006differential} معرفی شد و به سرعت به استاندارد طلایی برای حفظ حریم خصوصی در تحلیل داده‌ها تبدیل گشت. این چارچوب، یک تعریف ریاضی قوی از حریم خصوصی ارائه می‌دهد که مبتنی بر پنهان‌سازی حضور یا عدم حضور یک فرد خاص در مجموعه داده است.
+
+\subsection{مدل اعتماد و تعریف رسمی}
+\label{sec:bg:cdp-def}
+
+در مدل متمرکز\LTRfootnote{Centralized}، فرض بر این است که یک متصدی مورد اعتماد\LTRfootnote{Trusted Curator} وجود دارد. تمام افراد داده‌های خام و حساس خود را در اختیار این متصدی قرار می‌دهند (شکل \ref{fig:cdp-model} را ببینید). متصدی، مجموعه داده‌ی کامل \Dset را در اختیار دارد. وظیفه‌ی متصدی این است که با اجرای یک مکانیزم تصادفی\LTRfootnote{randomized mechanism} \mech \ بر روی \Dset، نتایجی (مثلاً پاسخ به یک پرس‌وجو\LTRfootnote{Query}) را به صورت عمومی منتشر کند، به طوری که اطلاعات حساس افراد فاش نشود.
+
+% شکل مدل متمرکز
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{figs/CDP-model.jpg}
+	\caption{مدل محرمانگی تفاضلی متمرکز با یک متصدی مورد اعتماد.}
+	\label{fig:cdp-model}
+\end{figure}
+
+برای تعریف رسمی، ابتدا باید مفهوم «همسایگی» مجموعه داده‌ها را تعریف کنیم.
+
+\begin{تعریف}[مجموعه داده‌های همسایه]
+\label{def:adjacent-datasets}
+دو مجموعه داده‌ی \Dset[1] و \Dset[2] را همسایه\LTRfootnote{Adjacent} می‌گوییم (و با $\Dset[1] \sim \Dset[2]$ نشان می‌دهیم) اگر تنها در یک رکورد با یکدیگر تفاوت داشته باشند. (یعنی \Dset[2] از افزودن یا حذف یک رکورد به \Dset[1] به دست آید).
+\end{تعریف}
+
+ایده‌ی اصلی محرمانگی تفاضلی این است که خروجی مکانیزم برای دو مجموعه داده‌ی همسایه باید از نظر آماری «شبیه» باشد، به طوری که مهاجم نتواند تشخیص دهد ورودی واقعی کدام بوده است.
+
+\begin{تعریف}[محرمانگی تفاضلی (\DP)]
+\label{def:cdp}
+یک مکانیزم تصادفی \ \mech، تعریف ${\eps}$-محرمانگی تفاضلی\LTRfootnote{\eps-Differential Privacy} را برآورده می‌سازد، اگر برای هر دو مجموعه داده‌ی همسایه‌ی \Dset[1] و \Dset[2] و برای هر زیرمجموعه $\Sset$ از خروجی‌های ممکن ($\mathrm{Range}(\mech)$)، داشته باشیم:
+\begin{equation}
+\label{eq:cdp}
+\mathrm{Pr}[\mech(\Dset[1]) \in \Sset] \le \exp(\eps) \cdot \mathrm{Pr}[\mech(\Dset[2]) \in \Sset]
+\end{equation}
+\end{تعریف}
+
+گاهی اوقات، یک تعریف انعطاف‌پذیرتر به نام \DP[(\eps, \del)] نیز استفاده می‌شود که اجازه‌ی یک احتمال شکست کوچک \del \ را می‌دهد:
+\begin{equation}
+\label{eq:cdp-delta}
+\mathrm{Pr}[\mech(\Dset[1]) \in \Sset] \le \exp(\eps) \cdot \mathrm{Pr}[\mech(\Dset[2]) \in \Sset] + \del
+\end{equation}
+
+\subsection{مکانیزم‌های پایه در \lr{CDP}}
+\label{sec:bg:cdp-mechanisms}
+
+برای دستیابی به \DP، باید به پاسخ دقیق پرس‌وجو «نویز»\LTRfootnote{Noise} اضافه کنیم. 
+میزان نویز به حساسیت\LTRfootnote{Sensitivity} پرس‌وجو بستگی دارد.
+
+\begin{تعریف}[حساسیت سراسری]
+\label{def:sensitivity}
+برای یک تابع $f$، حساسیت سراسری $\ell_1$ ($\Del_1 f$) و $\ell_2$ ($\Del_2 f$) به صورت زیر تعریف می‌شوند:
+\begin{align}
+\Del_1 f &= \max_{\Dset[1] \sim \Dset[2]} \|f(\Dset[1]) - f(\Dset[2])\|_1 \\
+\Del_2 f &= \max_{\Dset[1] \sim \Dset[2]} \|f(\Dset[1]) - f(\Dset[2])\|_2
+\end{align}
+\end{تعریف}
+
+سه مکانیزم اساسی برای دستیابی به \lr{CDP} عبارتند از:
+
+\begin{itemize}
+    \item \textbf{مکانیزم لاپلاس\LTRfootnote{The Laplace Mechanism}:}
+    برای توابع عددی، با افزودن نویز از توزیع لاپلاس متناسب با حساسیت $\ell_1$، می‌توان به \DP[\eps] دست یافت:
+    \begin{equation}
+    \label{eq:laplace-mech}
+    \mech(\Dset) = f(\Dset) + \mathrm{Lap}\left(\frac{\Del_1 f}{\eps}\right)
+    \end{equation}
+
+    \item \textbf{مکانیزم گوسی\LTRfootnote{The Gaussian Mechanism}:}
+    این مکانیزم اغلب زمانی استفاده می‌شود که حساسیت $\ell_2$ تابع کمتر از حساسیت $\ell_1$ باشد. در اینجا نویز از توزیع نرمال (گوسی) افزوده می‌شود:
+    \begin{equation}
+    \label{eq:gaussian-mech}
+    \mech(\Dset) = f(\Dset) + \mathcal{N}\left(0, \sigma^2\right)
+    \end{equation}
+    که در آن $\sigma \ge \sqrt{2 \ln(1.25/\del)} \cdot \frac{\Del_2 f}{\eps}$ است. برخلاف مکانیزم لاپلاس، این مکانیزم تنها \DP[(\eps, \del)] را (با $\del > 0$) تضمین می‌کند.
+
+    \item \textbf{مکانیزم نمایی\LTRfootnote{The Exponential Mechanism}:}
+    برای خروجی‌های غیرعددی (دسته‌ای)، از یک «تابع امتیاز» $q(\Dset, r)$ استفاده می‌شود. این مکانیزم خروجی $r$ را با احتمالی متناسب با امتیاز آن برمی‌گرداند:
+    \begin{equation}
+    \label{eq:exp-mech}
+    \mathrm{Pr}[\mech(\Dset) = r] \propto \exp \left( \frac{\eps \cdot q(\Dset, r)}{2 \Del q} \right)
+    \end{equation}
+\end{itemize}
+
+\subsection{خواص کلیدی محرمانگی تفاضلی}
+\label{sec:bg:cdp-properties}
+
+قدرت چارچوب \lr{DP} در خواص ترکیبی آن نهفته است:
+
+\begin{itemize}
+    \item \textbf{مصونیت در برابر پس‌پردازش\LTRfootnote{Post-processing Immunity}:}
+    انجام هرگونه محاسبات بر روی خروجی یک مکانیزم \DP (بدون دسترسی مجدد به داده‌های اصلی)، نمی‌تواند سطح محرمانگی را کاهش دهد.
+
+    \item \textbf{ترکیب‌پذیری\LTRfootnote{Composition}:}
+    اگر چندین مکانیزم \DP را اجرا کنیم، بودجه‌های محرمانگی جمع می‌شوند.
+    \begin{itemize}
+        \item \textit{ترکیب‌پذیری پایه‌ای:} اجرای $k$ مکانیزم $\eps_i$-DP منجر به $\sum \eps_i$-DP می‌شود.
+        \item \textit{ترکیب‌پذیری پیشرفته:} با پذیرش یک $\del$ کوچک، می‌توان نشان داد که بودجه کل با نرخ $\sqrt{k}$ رشد می‌کند (نه $k$).
+    \end{itemize}
+
+    \item \textbf{محرمانگی گروهی\LTRfootnote{Group Privacy}:}
+    محرمانگی تفاضلی به طور طبیعی برای گروه‌هایی از افراد نیز صادق است. اگر دو پایگاه داده در $k$ رکورد با هم متفاوت باشند، تضمین محرمانگی به صورت \DP[k\eps] برقرار خواهد بود. این یعنی با افزایش اندازه گروه، تضمین محرمانگی به صورت خطی تضعیف می‌شود.
+\end{itemize}
+
+\subsection{محدودیت مدل متمرکز}
+\label{sec:bg:cdp-limitations}
+
+با وجود تمام مزایا، مدل \lr{CDP} یک نقطه‌ی ضعف اساسی دارد: نیاز به یک متصدی کاملاً مورد اعتماد. در بسیاری از سناریوهای دنیای واقعی (مانند جمع‌آوری داده از گوشی‌های هوشمند)، کاربران به سرور مرکزی اعتماد ندارند. این عدم اعتماد، ما را به سمت مدل جایگزین، یعنی «محرمانگی تفاضلی محلی» سوق می‌دهد.

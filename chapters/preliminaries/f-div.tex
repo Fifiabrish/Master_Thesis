@@ -1,0 +1,84 @@
+\section{مبانی نظریه اطلاعات و \f-واگرایی‌ها}
+\label{sec:bg:f-divergence}
+
+در بخش‌های قبلی، ما مکانیزم‌های محرمانگی تفاضلی را به عنوان روش‌هایی برای ایجاد «شباهت آماری» بین خروجی‌های دو پایگاه داده‌ی همسایه معرفی کردیم.
+در این بخش، ما ابزار ریاضیاتی اصلی برای سنجش این «شباهت» یا «فاصله» بین توزیع‌های احتمالی را معرفی می‌کنیم.
+این ابزار، خانواده‌ی \f-واگرایی‌ها\LTRfootnote{$f$-divergences} است که بسیاری از معیارهای رایج فاصله‌ی آماری را به عنوان حالت‌های خاص خود در بر می‌گیرد.
+
+\subsection{تعریف \f-واگرایی}
+\label{sec:bg:f-div-def}
+
+مفهوم \f-واگرایی اولین بار توسط سیسر \cite{csiszar1963information} و به طور همزمان توسط علی و سیلوِی \cite{Ali1966Silvey} معرفی شد.
+این معیار، یک روش عمومی برای اندازه‌گیری تفاوت بین دو توزیع احتمال $P$ و $Q$ (تعریف شده بر روی یک فضای یکسان) ارائه می‌دهد.
+
+\begin{تعریف}[\f-واگرایی]
+\label{def:f-divergence}
+فرض کنید $P$ و $Q$ دو توزیع احتمال باشند به طوری که $P$ نسبت به $Q$ مطلقاً پیوسته\LTRfootnote{Absolutely Continuous} باشد.
+فرض کنید $p$ و $q$ توابع چگالی احتمال (یا توابع جرم احتمال) آن‌ها باشند.
+ برای هر تابع محدب 
+ \ $f: (0, \infty) \to \IR$ که $f(1) = 0$ باشد، \f-واگرایی $P$ از $Q$ به صورت زیر تعریف می‌شود:
+\begin{equation}
+\label{eq:f-divergence}
+D_f(P || Q) = \int q(x) f\left(\frac{p(x)}{q(x)}\right) dx
+\end{equation}
+در حالت گسسته، این تعریف به صورت حاصل جمع زیر در می‌آید:
+\begin{equation}
+\label{eq:f-divergence-discrete}
+D_f(P || Q) = \sum_{x \in \Xset} q(x) f\left(\frac{p(x)}{q(x)}\right)
+\end{equation}
+\end{تعریف}
+
+تابع $f$ «ژنراتور» (تولیدکننده)ی واگرایی نامیده می‌شود و با انتخاب $f$های متفاوت، می‌توان معیارهای فاصله یا واگرایی متفاوتی را به دست آورد.
+شرط $f(1) = 0$ تضمین می‌کند که اگر دو توزیع یکسان باشند ($P=Q$)، واگرایی آن‌ها صفر خواهد بود.
+
+\subsection{نمونه‌های مهم \f-واگرایی}
+\label{sec:bg:f-div-examples}
+
+بسیاری از معیارهای معروف در آمار و نظریه اطلاعات، حالت‌های خاصی از \f-واگرایی هستند:
+
+\begin{itemize}
+    \item 
+    واگرایی کولبک-لایبلر\LTRfootnote{Kullback-Leibler (KL) Divergence}:
+    این معیار که به آن آنتروپی نسبی\LTRfootnote{Relative Entropy} نیز گفته می‌شود، با انتخاب تابع $f(t) = t \log t$ به دست می‌آید:
+    \begin{equation}
+    \label{eq:kl-div}
+    D_{KL}(P || Q) = \sum_{x} p(x) \log \left(\frac{p(x)}{q(x)}\right)
+    \end{equation}
+    
+    \item
+    فاصله‌ی واریانس کل\LTRfootnote{Total Variation (TV) Distance}:
+    فاصله‌ی \lr{TV} (که اغلب با $\Del(P, Q)$ یا $d_{TV}$ نشان داده می‌شود) ارتباط نزدیکی با \f-واگرایی دارد و با انتخاب $f(t) = \frac{1}{2}|t-1|$ حاصل می‌شود:
+    \begin{equation}
+    \label{eq:tv-dist}
+    d_{TV}(P, Q) = \frac{1}{2} \sum_{x} |p(x) - q(x)|
+    \end{equation}
+    
+    \item
+    واگرایی کای-دو\LTRfootnote{Chi-Squared ($\chi^2$) Divergence}:
+    این معیار آماری با انتخاب $f(t) = (t-1)^2$ به دست می‌آید:
+    \begin{equation}
+    \label{eq:chi-squared}
+    \chi^2(P || Q) = \sum_{x} \frac{(p(x) - q(x))^2}{q(x)}
+    \end{equation}
+    
+    \item
+    فاصله‌ی هلینجر (مربع)\LTRfootnote{Squared-Hellinger Distance}:
+    این فاصله با انتخاب $f(t) = (\sqrt{t}-1)^2$ (یا معادل آن $f(t) = \frac{1}{2}(\sqrt{t}-1)^2$) حاصل می‌شود:
+    \begin{equation}
+    \label{eq:hellinger}
+    H^2(P, Q) = \sum_{x} (\sqrt{p(x)} - \sqrt{q(x)})^2
+    \end{equation}
+\end{itemize}
+
+\subsection{ارتباط \f-واگرایی‌ها با یکدیگر}
+\label{sec:bg:f-div-relations}
+
+این واگرایی‌ها مستقل از هم نیستند و روابط ریاضی مهمی بین آن‌ها برقرار است.
+یکی از مشهورترین این روابط، نامساوی پینسکر\LTRfootnote{Pinsker's Inequality} است که ارتباط بین واگرایی \lr{KL} و فاصله‌ی واریانس کل را نشان می‌دهد:
+\begin{equation}
+\label{eq:pinsker}
+d_{TV}(P, Q)^2 \le \frac{1}{2} D_{KL}(P || Q)
+\end{equation}
+این نامساوی‌ها در تحلیل‌های حریم خصوصی بسیار کاربردی هستند، زیرا به ما اجازه می‌دهند که با داشتن یک کران (حد) بر روی یک معیار واگرایی، بتوانیم کرانی برای سایر معیارها نیز به دست آوریم.
+
+در فصل بعدی، ما به تفصیل بررسی خواهیم کرد که چگونه تضمین \LDP (که در معادله \ref{eq:ldp} تعریف شد) مستقیماً منجر به ایجاد یک کران بالا بر روی \f-واگرایی‌های مختلف بین توزیع‌های خروجی می‌شود.
