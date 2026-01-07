@@ -257,6 +257,11 @@ BoldFont=Sharif1.3-SemiBold,
     {\ensuremath{\mathcal{Z}}}%
 }
 
+\NewDocumentCommand{\Eset}{o}{%
+  \IfValueTF{#1}%
+    {\ensuremath{\mathbb{E}_{#1}}}%
+    {\ensuremath{\mathbb{E}}}%
+}
 
 % استفاده: \DP یا \DP[k\epsilon] یا \DP[(\epsilon, \delta)]
 \NewDocumentCommand{\DP}{o}{%
@@ -268,9 +273,11 @@ BoldFont=Sharif1.3-SemiBold,
 \NewDocumentCommand{\LDP}{o}{%
   \IfValueTF{#1}%
     {\lr{\ensuremath{#1}-LDP}}%  <-- حالت با آرگومان
-    {\lr{$\eps$-LDP}}%     <-- حالت بدون آرگومان (پیش‌فرض)
+    {\lr{ \al-LDP}}%     <-- حالت بدون آرگومان (پیش‌فرض)
 }
 
+% تعریف دستور برای نرم (Norm)
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 % -------------------- حروف یونانی (حالت ریاضی خودکار) --------------------
 
 % ----- حروف کوچک (با متغیرها) -----
