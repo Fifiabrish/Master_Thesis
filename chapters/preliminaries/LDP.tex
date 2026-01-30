@@ -127,8 +127,8 @@ p = \frac{e^\alpha}{1+e^\alpha}
 \begin{equation}
 \Pr[\mech(x) = z] = 
 \begin{cases} 
-p & \text{if } z = x \\
-q & \text{if } z \neq x
+p & \text{if } \ \ z = x \\
+q & \text{if } \ \ z \neq x
 \end{cases}
 \end{equation}
 از آنجا که مجموع احتمالات باید ۱ باشد، داریم $p + (k-1)q = 1$. همچنین شرط \LDP ایجاب می‌کند که $\frac{p}{q} \le e^\alpha$. با حل این دستگاه معادلات، مقادیر بهینه $p$ و $q$ به صورت زیر به دست می‌آیند:
@@ -144,16 +144,16 @@ p = \frac{e^\alpha}{e^\alpha + k - 1}, \quad q = \frac{1}{e^\alpha + k - 1}
 
 در این روش، فرآیند خصوصی‌سازی طی دو مرحله انجام می‌شود:
 \begin{enumerate}
-    \item \textbf{کدگذاری (Encoding):} ورودی $x \in \{1, \dots, k\}$ به یک بردار بیتی $v$ به طول $k$ تبدیل می‌شود که تنها در موقعیت $x$ برابر با ۱ و در سایر جاها ۰ است (One-hot encoding).
-    \item \textbf{اختلال (Perturbation):} هر بیت این بردار به صورت مستقل با استفاده از یک مکانیزم باینری معکوس می‌شود.
+    \item \textbf{کدگذاری \lr{(Encoding)}:} ورودی $x \in \{1, \dots, k\}$ به یک بردار بیتی $v$ به طول $k$ تبدیل می‌شود که تنها در موقعیت $x$ برابر با ۱ و در سایر جاها ۰ است \lr{(One-hot encoding)}.
+    \item \textbf{اختلال \lr{(Perturbation)}:} هر بیت این بردار به صورت مستقل با استفاده از یک مکانیزم باینری معکوس می‌شود.
 \end{enumerate}
 
 اگر $v_i$ بیت $i$-ام بردار کدگذاری شده باشد، خروجی $z_i$ به صورت زیر تولید می‌شود:
 \begin{equation}
 \Pr[z_i = 1] = 
 \begin{cases} 
-p & \text{if } v_i = 1 \\
-q & \text{if } v_i = 0
+p & \text{if } \ \ v_i = 1 \\
+q & \text{if } \ \ v_i = 0
 \end{cases}
 \end{equation}
 بر اساس انتخاب مقادیر $p$ و $q$، دو مکانیزم مهم در این خانواده تعریف می‌شوند:
