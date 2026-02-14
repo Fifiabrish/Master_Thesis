@@ -14,6 +14,15 @@
 \usepackage{multirow}
 \usepackage[figureposition=bottom,tableposition=top,font={small,bf},labelfont=bf]{caption}
 
+% پکیج اصلی برای رسم نمودارها
+\usepackage{tikz}
+
+% کتابخانه‌های مورد نیاز TikZ برای اشکال هندسی، مکان‌یابی و لایه‌بندی
+\usetikzlibrary{shapes.geometric, positioning, fit, backgrounds}
+
+% پکیج مورد نیاز برای نمایش شکلک (smiley) در نمودارها
+\usepackage{wasysym}
+
 \usepackage{algorithmicx,algorithm}
 
 \usepackage[localise=on,extrafootnotefeatures]{xepersian}
@@ -225,6 +234,12 @@ BoldFont=Sharif1.3-SemiBold,
   \IfValueTF{#1}%
     {\ensuremath{\mathcal{X}_{#1}}}%
     {\ensuremath{\mathcal{X}}}%
+}
+
+\NewDocumentCommand{\Yset}{o}{%
+  \IfValueTF{#1}%
+    {\ensuremath{\mathcal{Y}_{#1}}}%
+    {\ensuremath{\mathcal{Y}}}%
 }
 
 % برای زیرمجموعه‌های خروجی (Subsets of Range)

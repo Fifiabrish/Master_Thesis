@@ -4,39 +4,7 @@
 در بخش‌های پیشین، ابزارهای سنجش فاصله بین توزیع‌ها (مانند $f$-واگرایی‌ها) را معرفی کردیم. در این بخش، به معرفی چارچوب آماری می‌پردازیم که در آن از این ابزارها برای تحلیل حدود پایین خطا در حضور محدودیت‌های محرمانگی استفاده می‌شود.
 این تعاریف و قضایا عمدتاً بر اساس چارچوب ارائه‌شده در \cite{Duchi2013} تدوین شده‌اند.
 
-\subsection{معیارهای فاصله اطلاعاتی}
-\label{sec:bg:info-metrics}
 
-برای دو توزیع احتمال $P$ و $Q$ که روی فضای $\Xset$ تعریف شده‌اند و نسبت به یک اندازه‌ی پایه $\mu$ مطلقاً پیوسته هستند (با توابع چگالی $p$ و $q$)، معیارهای زیر را تعریف می‌کنیم:
-
-\begin{تعریف}[واگرایی کولبک-لایبلر]
-\label{def:kl-divergence}
-واگرایی کولبک-لایبلر (\lr{KL}) بین دو توزیع $P$ و $Q$ به صورت زیر تعریف می‌شود:
-\begin{equation}
-\label{eq:kl-def}
-D_{KL}(P || Q) = \int_{\Xset} p(x) \log \frac{p(x)}{q(x)} d\mu(x)
-\end{equation}
-\end{تعریف}
-
-\begin{تعریف}[فاصله‌ی واریانس کل]
-\label{def:tv-distance}
-فاصله‌ی واریانس کل\LTRfootnote{Total Variation Distance} بین دو توزیع $P$ و $Q$ به صورت زیر تعریف می‌شود:
-\begin{equation}
-\label{eq:tv-def}
-\|P - Q\|_{TV} = \sup_{S \in \sigma(\Xset)} |P(S) - Q(S)|
-= \frac{1}{2} \int_{\Xset} |p(x) - q(x)| d\mu(x)
-\end{equation}
-\end{تعریف}
-
-\begin{تعریف}[اطلاعات متقابل]
-\label{def:mutual-info}
-اگر $X$ و $V$ دو متغیر تصادفی باشند، اطلاعات متقابل\LTRfootnote{Mutual Information} بین آن‌ها به صورت امید ریاضی واگرایی \lr{KL} بین توزیع شرطی و توزیع حاشیه‌ای تعریف می‌شود:
-\begin{equation}
-\label{eq:mutual-info}
-I(X; V) = D_{KL}(P_{X,V} || P_X \otimes P_V) = \mathbb{E}_{V} \left[ D_{KL}(P_{X|V} || P_X) \right]
-\end{equation}
-این معیار نقش کلیدی در نامساوی فانو (که در ادامه می‌آید) ایفا می‌کند.
-\end{تعریف}
 
 \subsection{ریسک مینیماکس}
 \label{sec:bg:minimax-risk}
