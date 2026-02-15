@@ -48,85 +48,116 @@ D_f(P \| Q) = \Eset_Q \left[ f\left( \frac{dP}{dQ} \right) \right]
 \begin{equation}
 D_f(P \| Q) = \int_{\mathcal{X}} q(x) f\left( \frac{p(x)}{q(x)} \right) dx \quad \text{یا} \quad \sum_{x \in \mathcal{X}} q(x) f\left( \frac{p(x)}{q(x)} \right)
 \end{equation}
+
+\textbf{تفاوت واگرایی با متر ریاضی:}
+اگرچه در ادبیات موضوع، گاهی با اغماض از واژه‌ی «فاصله»\LTRfootnote{Distance} برای واگرایی‌ها استفاده می‌شود، اما باید توجه داشت که واگرایی‌ها لزوماً خواص یک متریک حقیقی را ندارند. یک تابع $d(P, Q)$ تنها در صورتی یک متر ریاضی است که علاوه بر غیرمنفی بودن و اصل همانی، دو شرط تقارن\LTRfootnote{Symmetry} ($d(P, Q) = d(Q, P)$) و نامساوی مثلث\LTRfootnote{Triangle Inequality} ($d(P, R) \le d(P, Q) + d(Q, R)$) را ارضا کند. 
+
+بسیاری از واگرایی‌های معرفی شده در این بخش، به‌ویژه واگرایی کولبک-لایبلر (بخش~\ref{def:kl})، این دو شرط را نقض می‌کنند. عدم تقارن در واگرایی‌ها دارای تفسیر آماری مهمی است؛ به عنوان مثال $\KL(P\|Q)$ بیان‌گر میزان اطلاعات از دست رفته زمانی است که از توزیع $Q$ برای مدل‌سازی توزیع واقعی $P$ استفاده می‌کنیم. این مفهوم ماهیتی «جهت‌دار» دارد و با جابجایی جایگاه فرضیه و واقعیت تغییر می‌کند. با این حال، $f$-واگرایی‌ها هم‌چنان خواص توپولوژیکی و هندسی قدرتمندی دارند که در فصل‌های آتی برای استخراج کران‌های پایین مینی‌مکس از آن‌ها بهره خواهیم برد.
 \subsection{نمونه‌های مهم و توابع مولد}
 \label{sec:bg:f-div-examples}
 
 با انتخاب‌های متفاوت برای تابع مولد محدب $f(t)$، می‌توان طیف وسیعی از اندازه‌های فاصله را تولید کرد. در ادامه، مهم‌ترین نمونه‌ها را معرفی می‌کنیم.
 در تعاریف زیر، فرض می‌کنیم $P$ و $Q$ دو اندازه احتمال باشند که دارای چگالی (یا جرم) احتمال $p(x)$ و $q(x)$ نسبت به یک اندازه پایه هستند.
 
-\begin{itemize}
-    \item \textbf{فاصله تغییرات کل\LTRfootnote{Total Variation (TV)}:}
-    این فاصله، شهودی‌ترین متریک برای سنجش تمایزپذیری دو توزیع است و بیان‌گر بیش‌ترین تفاوت احتمالی است که دو توزیع می‌توانند روی یک پیشامد داشته باشند. تابع مولد آن $f(t) = \frac{1}{2}|t-1|$ است.
-    \begin{align}
-    \mathrm{TV}(P, Q) &= \frac{1}{2} \int_{\Xset} |p(x) - q(x)| dx \\
-    &= \sup_{A \in \mathcal{F}} |P(A) - Q(A)|
-    \end{align}
 
-    \item \textbf{واگرایی کولبک-لایبلر\LTRfootnote{Kullback-Leibler (KL)}:}
-    معروف‌ترین واگرایی در نظریه اطلاعات که آنتروپی نسبی\LTRfootnote{Relative Entropy} نیز نامیده می‌شود. این معیار نامتقارن است و نقش اساسی در فشرده‌سازی داده‌ها و استنتاج بیزی دارد. تابع مولد آن $f(t) = t \ln t$ است.
-    \begin{equation}
-    \mathrm{KL}(P \| Q) = \int_{\Xset} p(x) \ln \frac{p(x)}{q(x)} dx
-    \end{equation}
+\begin{تعریف}[تغییرات کل]
+\label{def:tv}
 
+فاصله تغییرات کل\LTRfootnote{Total Variation (TV)}،
+ شهودی‌ترین متریک برای سنجش تمایزپذیری دو توزیع است و بیان‌گر بیش‌ترین تفاوت احتمالی است که دو توزیع می‌توانند روی یک پیشامد داشته باشند.
+تابع مولد آن $f(t) = \frac{1}{2}|t-1|$ است.
+\begin{align}
+\TV(P, Q) &= \frac{1}{2} \int_{\Xset} \left|p(x) - q(x)\right| dx \\
+&= \sup_{A \subseteq \Xset} \left|P(A) - Q(A)\right|
+\end{align}
+این واگرایی ممکن است با نمادهایی مانند $d_{\TV}$ یا $\|.\|_{\TV}$ نیز نمایش داده ‌شود.
+\end{تعریف}
 
-    \item \textbf{اطلاعات متقابل}
-    \label{def:mutual-info}
-    اگر $X$ و $V$ دو متغیر تصادفی باشند، اطلاعات متقابل\LTRfootnote{Mutual Information} بین آن‌ها به صورت امید ریاضی واگرایی \lr{KL} بین توزیع شرطی و توزیع حاشیه‌ای تعریف می‌شود:
-    \begin{equation}
-    \label{eq:mutual-info}
-    I(X; V) = D_{KL}(P_{X,V} || P_X \otimes P_V) = \mathbb{E}_{V} \left[ D_{KL}(P_{X|V} || P_X) \right]
-    \end{equation}
-    این معیار نقش کلیدی در نامساوی فانو (که در بخش بعد می‌بینیم) ایفا می‌کند. 
+\begin{تعریف}[کولبک-لایبلر]
+\label{def:kl}
+واگرایی کولبک-لایبلر\LTRfootnote{Kullback-Leibler (KL)}،
+معروف‌ترین واگرایی در نظریه اطلاعات که آنتروپی نسبی\LTRfootnote{Relative Entropy} نیز نامیده می‌شود. این معیار نامتقارن است و نقش اساسی در فشرده‌سازی داده‌ها و استنتاج بیزی دارد. تابع مولد آن $f(t) = t \ln t$ است.
+\begin{equation}
+\label{eq:kl-def}
+\KL(P \| Q) = \int_{\Xset} p(x) \ln \left(\frac{p(x)}{q(x)}\right) dx
+\end{equation}
+\end{تعریف}
 
-    \item \textbf{واگرایی کای-دو\LTRfootnote{Chi-Squared ($\chi^2$)}:}
-    تابع مولد آن $f(t) = (t-1)^2$ است. این واگرایی اغلب برای تقریب‌زنی سایر فواصل (مانند \lr{KL}) در همسایگی‌های کوچک استفاده می‌شود و محاسبه آن ساده‌تر است.
-    \begin{equation}
-    \chi^2(P \| Q) = \int_{\Xset} \frac{(p(x) - q(x))^2}{q(x)} dx
-    \end{equation}
+\begin{تعریف}[اطلاعات متقابل]
+\label{def:mutual-info}
+اگر $X$ و $V$ دو متغیر تصادفی باشند، اطلاعات متقابل\LTRfootnote{Mutual Information} بین آن‌ها به صورت امید ریاضی واگرایی \lr{KL} بین توزیع شرطی و توزیع حاشیه‌ای تعریف می‌شود:
+\begin{equation}
+\label{eq:mutual-info}
+I(X; V) = \KL(P_{X,V} \| P_X \otimes P_V) = \Eset_{V} \left[ \KL(P_{X|V} \| P_X) \right]
+\end{equation}
+این معیار نقش کلیدی در نامساوی فانو و تحلیل کانال‌های اطلاعاتی ایفا می‌کند \cite{duchi2018}.
+\end{تعریف}
 
-    \item \textbf{فاصله هلینگر-دو\LTRfootnote{Squared Hellinger}:}
-    تابع مولد آن $f(t) = (\sqrt{t}-1)^2$ است. این فاصله به دلیل خواص ریاضی خوش‌رفتار (مانند متریک بودن و کران‌دار بودن)، در نظریه برآورد\LTRfootnote{Estimation Theory} و استخراج کران‌های مینیماکس (مانند روش \lr{Le Cam}) کاربرد فراوان دارد.
-    \begin{equation}
-    H^2(P, Q) = \int_{\Xset} (\sqrt{p(x)} - \sqrt{q(x)})^2 dx
-    \end{equation}
-\item \textbf{واگرایی $E_\gamma$ (یا واگرایی هاکی-استیک\LTRfootnote{Hockey-Stick Divergence}):}
-    این واگرایی ابزاری کلیدی در تحلیل‌های مدرن حریم خصوصی و آزمون‌های فرضیه است. تابع مولد آن برای پارامتر $\gamma \ge 1$ به صورت $f_\gamma(t) = [t - \gamma]_+ = \max\{0, t - \gamma\}$ است.
-    
-    \textbf{تعریف و صورت‌های معادل:}
-    تعریف اصلی بر اساس انتگرالِ جرمِ اضافی نسبت درست‌نمایی است، اما صورت‌های معادل زیر بینش عملیاتی‌تری ارائه می‌دهند:
-    \begin{subequations}
-    \begin{align}
-    E_\gamma(P \| Q) &= \int_{\Xset} \max\{0, p(x) - \gamma q(x)\} dx \\
-    &= \sup_{A \subseteq \Xset} (P(A) - \gamma Q(A)) \label{eq:egamma-sup} \\
-    &= P(Z > \gamma) - \gamma Q(Z > \gamma) \quad (\text{که } Z = \frac{p(x)}{q(x)}) \label{eq:egamma-prob}
-    \end{align}
-    \end{subequations}
-    رابطه \eqref{eq:egamma-sup} نشان می‌دهد که این واگرایی بیانگر بیشینه‌ی تفاضل وزن‌دار احتمالات است که مستقیماً با موازنه خطای نوع اول و دوم در آزمون فرضیه مرتبط است.
-    
-    \textbf{نکات تحلیلی و تاریخی:}
-    نام‌گذاری توصیفی این واگرایی به «هاکی-استیک» که نخستین بار توسط ساسون و وِردو \cite{sason2016f} پیشنهاد شد، برخاسته از شکل هندسی نمودار تابع مولد $f(t)$ است (تخت بودن تا $\gamma$ شبیه تیغه، و صعود خطی پس از آن شبیه دسته چوب هاکی). نمادگذاری $E_\gamma$ و تدوین نقش بنیادی آن، پیش‌تر توسط پولیانسکی و همکاران \cite{polyanskiy2010channel} صورت گرفته بود.
-    
-    \textbf{کاربرد در حریم خصوصی:}
-    شرط محرمانگی تفاضلی تقریبی (\DP[(\eps, \del)]) دقیقاً معادل است با اینکه برای هر دو دیتابیس همسایه، واگرایی هاکی-استیک خروجی‌ها از مقدار $\delta$ تجاوز نکند: $E_{e^\eps}(P \| Q) \le \delta$.
+\begin{تعریف}[کای-دو]
+\label{def:chi2}
+واگرایی کای-دو\LTRfootnote{Chi-Squared ($\chi^2$)}،
+ اغلب برای تقریب‌زنی سایر فواصل (مانند \lr{KL}) در همسایگی‌های کوچک استفاده می‌شود و به دلیل فرم مربعی، محاسبه آن معمولاً ساده‌تر است.
+ تابع مولد آن $f(t) = (t-1)^2$ است.
+\begin{equation}
+\chi^2(P \| Q) = \int_{\Xset} \frac{\left(p(x) - q(x)\right)^2}{q(x)} dx
+\end{equation}
+\end{تعریف}
 
-    \item \textbf{واگرایی رنی\LTRfootnote{Rényi Divergence}:}
-    برای پارامتر $\alpha \in (1, \infty)$، این واگرایی به صورت زیر تعریف می‌شود:
-    \begin{equation}
-    D_\alpha(P \| Q) = \frac{1}{\alpha - 1} \ln \int_{\Xset} p(x)^\alpha q(x)^{1-\alpha} dx
-    \end{equation}
-    این واگرایی پلی میان واگرایی \lr{KL} (در حد $\alpha \to 1$) و واگرایی ماکزیمم (در حد $\alpha \to \infty$) است. اگرچه فرم لگاریتمی دارد، اما تبدیلی یک‌نوا از «واگرایی سالیس»\LTRfootnote{Tsallis Divergence} است که خود یک $f$-واگرایی می‌باشد.
+\begin{تعریف}[هلینگر-دو]
+\label{def:hellinger}
+فاصله هلینگر-دو\LTRfootnote{Squared Hellinger}،
+تابع مولد آن $f(t) = (\sqrt{t}-1)^2$ است. این فاصله به دلیل خواص ریاضی خوش‌رفتار (مانند متریک و کران‌دار بودن بین ۰ و ۲)، در نظریه برآورد\LTRfootnote{Estimation Theory} و استخراج کران‌های مینی‌مکس (مانند روش \lr{Le Cam}) کاربرد فراوان دارد.
+\begin{equation}
+H^2(P, Q) = \int_{\Xset} \left(\sqrt{p(x)} - \sqrt{q(x)}\right)^2 dx
+\end{equation}
+\end{تعریف}
 
-    \item \textbf{واگرایی ماکزیمم ($D_\infty$):}
-    این واگرایی متناظر با بدترین نسبت درست‌نمایی نقطه‌ای است و به عنوان حدِ واگرایی رنی به دست می‌آید:
-    \begin{equation}
-    D_\infty(P \| Q) = \lim_{\alpha \to \infty} D_\alpha(P \| Q) = \sup_{x \in \Xset} \ln \frac{p(x)}{q(x)}
-    \end{equation}
-    \textbf{کاربرد در حریم خصوصی:}
+\begin{تعریف}[$E_\gamma$ یا هاکی-استیک]
+\label{def:egamma}
+واگرایی $E_\gamma$ یا واگرایی هاکی-استیک\LTRfootnote{Hockey-Stick Divergence}،
+ابزاری کلیدی در تحلیل‌های مدرن حریم خصوصی و آزمون‌های فرضیه است. تابع مولد آن برای پارامتر $\gamma \ge 1$ به صورت $f_\gamma(t) = [t - \gamma]_+ = \max\left\{0, t - \gamma\right\}$ است.
+
+\textbf{تعریف و صورت‌های معادل:}
+تعریف اصلی بر اساس انتگرالِ جرمِ اضافی نسبت درست‌نمایی است، اما صورت‌های معادل زیر بینش عملیاتی‌تری ارائه می‌دهند:
+\begin{subequations}
+\begin{align}
+E_\gamma(P \| Q) &= \int_{\Xset} \max\left\{0, p(x) - \gamma q(x)\right\} dx \\
+&= \sup_{A \subseteq \Xset} \left(P(A) - \gamma Q(A)\right) \label{eq:egamma-sup} \\
+&= P(Z > \gamma) - \gamma Q(Z > \gamma) \quad \left(\text{که } Z = \frac{p(x)}{q(x)}\right) \label{eq:egamma-prob}
+\end{align}
+\end{subequations}
+رابطه \eqref{eq:egamma-sup} نشان می‌دهد که این واگرایی بیان‌گر بیشینه‌ی تفاضل وزن‌دار احتمالات است که مستقیماً با موازنه خطای نوع اول و دوم در آزمون فرضیه مرتبط است.
+
+\textbf{نکات تحلیلی و تاریخی:}
+نام‌گذاری توصیفی این واگرایی به «هاکی-استیک» که نخستین بار توسط ساسون و وِردو \cite{sason2016f} پیشنهاد شد، برخاسته از شکل هندسی نمودار تابع مولد $f(t)$ است. نمادگذاری $E_\gamma$ و تدوین نقش بنیادی آن، پیش‌تر توسط پولیانسکی و همکاران \cite{polyanskiy2010channel} صورت گرفته بود.
+
+\textbf{کاربرد در حریم خصوصی:}
+شرط محرمانگی تفاضلی تقریبی (\DP[(\eps, \del)]) دقیقاً معادل است با اینکه برای هر دو دیتابیس همسایه، واگرایی هاکی-استیک خروجی‌ها از مقدار $\delta$ تجاوز نکند:
+\begin{equation}
+E_{e^\eps}(P \| Q) \le \delta
+\end{equation}
+\end{تعریف}
+
+\begin{تعریف}[رنی]
+\label{def:renyi}
+واگرایی رنی\LTRfootnote{Rényi Divergence}،
+با پارامتر $\alpha \in (1, \infty)$، به صورت زیر تعریف می‌شود:
+\begin{equation}
+D_\alpha(P \| Q) = \frac{1}{\alpha - 1} \ln \left( \int_{\Xset} p(x)^\alpha q(x)^{1-\alpha} dx \right)
+\end{equation}
+این واگرایی پلی میان واگرایی \lr{KL} (در حد $\alpha \to 1$) و واگرایی ماکزیمم (در حد $\alpha \to \infty$) است و در تحلیل ترکیب‌‌پذیری مکانیزم‌ها کاربرد دارد \cite{mironov2017renyi}.
+\end{تعریف}
+
+\begin{تعریف}[ماکزیمم ($D_\infty$)]
+\label{def:maxdiv}
+این واگرایی متناظر با بدترین نسبت درست‌نمایی نقطه‌ای است و به عنوان حدِ واگرایی رنی به دست می‌آید:
+\begin{equation}
+D_\infty(P \| Q) = \lim_{\alpha \to \infty} D_\alpha(P \| Q) = \sup_{x \in \Xset} \ln \left(\frac{p(x)}{q(x)}\right)
+\end{equation}
+\textbf{کاربرد در حریم خصوصی:}
     شرط \DP (خالص) دقیقاً معادل است با کران‌دار بودن این واگرایی توسط بودجه حریم خصوصی: $D_\infty(P \| Q) \le \eps$.
 
-\end{itemize}
-
-
+\end{تعریف}
 \subsection{خواص بنیادین و روابط بین $f$-واگرایی‌ها}
 \label{sec:bg:f-div-properties}
 
@@ -149,7 +180,7 @@ D_f(P\kappa \| Q\kappa) \le D_f(P \| Q)
 \begin{قضیه}[تحدب مشترک\LTRfootnote{Joint Convexity}]
 نگاشت $(P, Q) \mapsto D_f(P \| Q)$ یک تابع محدب مشترک است. یعنی برای هر $\lambda \in [0, 1]$ و توزیع‌های $P_1, P_2, Q_1, Q_2$:
 \begin{equation}
-D_f(\lambda P_1 + (1-\lambda)P_2 \| \lambda Q_1 + (1-\lambda)Q_2) \le \lambda D_f(P_1 \| Q_1) + (1-\lambda) D_f(P_2 \| Q_2)
+D_f\left(\lambda P_1 + (1-\lambda)P_2 \| \lambda Q_1 + (1-\lambda)Q_2\right) \le \lambda D_f(P_1 \| Q_1) + (1-\lambda) D_f(P_2 \| Q_2)
 \end{equation}
 \end{قضیه}
 این ویژگی در تحلیل مکانیزم‌هایی که ترکیبی از چند مکانیزم ساده‌تر هستند، بسیار کاربرد دارد.
@@ -162,13 +193,14 @@ D_f(\lambda P_1 + (1-\lambda)P_2 \| \lambda Q_1 + (1-\lambda)Q_2) \le \lambda D_
     این نامساوی مشهور، ارتباط هندسه (فاصله تغییرات کل) و اطلاعات (واگرایی \lr{KL}) را برقرار می‌کند و نشان می‌دهد که همگرایی در آنتروپی نسبی، همگرایی در $L_1$ را تضمین می‌کند:
     \begin{equation}
     \label{eq:pinsker}
-    \mathrm{TV}(P, Q) \le \sqrt{\frac{1}{2} \mathrm{KL}(P \| Q)}
+    \TV(P, Q) \le \sqrt{\frac{1}{2} \KL(P \| Q)}
     \end{equation}
     
     \item \textbf{رابطه هاکی-استیک و \lr{TV}:}
     می‌توان به سادگی دید واگرایی هاکی-استیک تعمیمی از فاصله تغییرات کل است. به طور مشخص، در نقطه $\gamma=1$ این دو معیار بر هم منطبق می‌شوند:
     \begin{equation}
-    E_1(P \| Q) = \mathrm{TV}(P, Q)
+    E_1(P \| Q) = \TV(P, Q)
     \end{equation}
     این تساوی پل ارتباطی مهمی بین تعاریف \DP[(\eps,\del)] و تحلیل‌های مبتنی بر فاصله تغییرات کل فراهم می‌کند.
 \end{itemize}
+
