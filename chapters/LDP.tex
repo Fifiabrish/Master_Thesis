@@ -103,8 +103,120 @@
 
 \section{پروتکل‌های تعاملی و خواص ترکیب}
 \label{sec:ldp:interaction}
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        % تنظیمات کلی
+        node distance=1.5cm,
+        % دایره‌ها سفید هستند تا خطوط زیرین را بپوشانند
+        main/.style={circle, draw, minimum size=0.8cm, inner sep=0pt, thick, fill=white},
+        ghost/.style={circle, draw, dashed, minimum size=0.8cm, inner sep=0pt, thick, color=gray, fill=white},
+        arrow/.style={-stealth, thick},
+        darrow/.style={-stealth, thick, dashed}
+    ]
 
-برای تحلیل دقیق حدود مینی‌مکس و درک محدودیت‌های بنیادین \lr{LDP}، نیازمند مدل‌سازی دقیق نحوه‌ی تعامل کاربران با سرور (یا جمع‌آورنده داده) هستیم. دوچی و همکاران \cite{Duchi2013} پروتکل‌های موضعی را بر اساس ساختار وابستگی آماری خروجی‌ها به دو دسته‌ی کلی تقسیم می‌کنند: غیرتعاملی و تعاملی.
+    % ---------------------------------------------------------
+    % (الف) حالت تعاملی (Interactive) - سمت راست
+    % ---------------------------------------------------------
+    \begin{scope}[local bounding box=scopeA]
+        % --- ردیف بالا (X) ---
+        \node[main] (x1) {$X_1$};
+        \node[main] (x2) [right of=x1] {$X_2$};
+        
+        % دایره‌های فشرده (Stack) برای X
+        \node[ghost] (xg1) [right of=x2] {}; 
+        \node[ghost] (xg2) [right of=xg1, node distance=0.5cm] {}; 
+        \node[ghost] (xg3) [right of=xg2, node distance=0.5cm] {}; 
+        
+        \node[main] (xn) [right of=xg3, node distance=1.5cm] {$X_n$};
+
+        % --- ردیف پایین (Z) ---
+        \node[main] (z1) [below of=x1, yshift=-0.8cm] {$Z_1$};
+        \node[main] (z2) [below of=x2, yshift=-0.8cm] {$Z_2$};
+        
+        % دایره‌های فشرده برای Z
+        \node[ghost] (zg1) [below of=xg1, yshift=-0.8cm] {};
+        \node[ghost] (zg2) [below of=xg2, yshift=-0.8cm] {};
+        \node[ghost] (zg3) [below of=xg3, yshift=-0.8cm] {};
+        
+        \node[main] (zn) [below of=xn, yshift=-0.8cm] {$Z_n$};
+
+        % --- یال‌های عمودی (X -> Z) ---
+        \draw[arrow] (x1) -- (z1);
+        \draw[arrow] (x2) -- (z2);
+        \draw[darrow] (xg1) -- (zg1); 
+        \draw[darrow] (xg2) -- (zg2); 
+        \draw[darrow] (xg3) -- (zg3); 
+        \draw[arrow] (xn) -- (zn);
+
+        % --- یال‌های افقی و مورب (وابستگی کامل تعاملی) ---
+        
+        % 1. وابستگی مستقیم (i به i+1): ممتد (Solid)
+        \draw[arrow] (z1) -- (z2);
+        \draw[darrow] (z2) -- (zg1); % اتصال به بخش میانی
+        \draw[darrow] (zg3) -- (zn);
+
+        % 2. وابستگی‌های دوربرد (Z1 به i>2): خط‌چین (Dashed)
+        % از Z1 به آینده دور
+        \draw[darrow, bend right=35] (z1) to (zg1);
+        \draw[darrow, bend right=45] (z1) to (zn);
+        
+        % از Z2 به آینده دور
+        \draw[darrow, bend right=35] (z2) to (zn);
+
+        \node at (2.7, -4) {(الف)};
+    \end{scope}
+
+    % ---------------------------------------------------------
+    % (ب) حالت غیرتعاملی (Non-interactive) - سمت چپ (با شیفت افقی)
+    % ---------------------------------------------------------
+    % تغییر اصلی اینجاست: استفاده از xshift به جای yshift
+    \begin{scope}[xshift=8cm, local bounding box=scopeB]
+        % --- ردیف بالا (X) ---
+        \node[main] (bx1) {$X_1$};
+        \node[main] (bx2) [right of=bx1] {$X_2$};
+        
+        % دایره‌های فشرده
+        \node[ghost] (bxg1) [right of=bx2] {};
+        \node[ghost] (bxg2) [right of=bxg1, node distance=0.5cm] {};
+        \node[ghost] (bxg3) [right of=bxg2, node distance=0.5cm] {};
+        
+        \node[main] (bxn) [right of=bxg3, node distance=1.5cm] {$X_n$};
+
+        % --- ردیف پایین (Z) ---
+        \node[main] (bz1) [below of=bx1, yshift=-0.8cm] {$Z_1$};
+        \node[main] (bz2) [below of=bx2, yshift=-0.8cm] {$Z_2$};
+        
+        % دایره‌های فشرده
+        \node[ghost] (bzg1) [below of=bxg1, yshift=-0.8cm] {};
+        \node[ghost] (bzg2) [below of=bxg2, yshift=-0.8cm] {};
+        \node[ghost] (bzg3) [below of=bxg3, yshift=-0.8cm] {};
+        
+        \node[main] (bzn) [below of=bxn, yshift=-0.8cm] {$Z_n$};
+
+        % --- یال‌های عمودی (X -> Z) ---
+        \draw[arrow] (bx1) -- (bz1);
+        \draw[arrow] (bx2) -- (bz2);
+        \draw[darrow] (bxg1) -- (bzg1); 
+        \draw[darrow] (bxg2) -- (bzg2); 
+        \draw[darrow] (bxg3) -- (bzg3); 
+        \draw[arrow] (bxn) -- (bzn);
+                
+        % --- بدون یال افقی ---
+        
+        \node at (2.8, -4) {(ب)};
+    \end{scope}
+
+    \end{tikzpicture}
+    
+    \caption{
+    (الف) مدل گرافیکی نمایش‌دهنده‌ی روابط استقلال شرطی بین داده‌های خصوصی $\{X_i\}_{i=1}^n$ و متغیرهای مشاهده‌شده $\{Z_i\}_{i=1}^n$ در پروتکل‌های تعاملی؛ پیکان‌های افقی نشان‌دهنده‌ی وابستگی $Z_i$ به تاریخچه‌ی پیشین هستند.
+    (ب) مدل گرافیکی ساده‌تر در پروتکل‌های غیرتعاملی که در آن خروجی‌ها به شرط ورودی‌ها از یکدیگر مستقل هستند.
+    }
+    \label{fig:interactive-vs-noninteractive}
+\end{figure}
+
+برای تحلیل دقیق حدود مینی‌مکس و درک محدودیت‌های بنیادین \lr{LDP}، نیازمند مدل‌سازی دقیق نحوه‌ی تعامل کاربران با سرور (یا جمع‌آورنده داده) هستیم. دوچی و همکاران \cite{Duchi2013} پروتکل‌های موضعی را بر اساس ساختار وابستگی آماری خروجی‌ها به دو دسته‌ی کلی تقسیم می‌کنند (شکل \ref{fig:interactive-vs-noninteractive} را ببینید): غیرتعاملی و تعاملی.
 
 \subsection{پروتکل‌های غیرتعاملی}
 در پروتکل‌های غیرتعاملی\LTRfootnote{Non-interactive}، تمام کاربران $i=1, \dots, n$ مکانیزم‌های خود را به صورت هم‌زمان و مستقل از یک‌دیگر اجرا می‌کنند. اگر $Z_i$ خروجی کاربر $i$-ام باشد، توزیع آن تنها به داده‌ی خصوصی $X_i$ وابسته است و هیچ وابستگی‌ای به خروجی سایر کاربران ندارد.
@@ -122,8 +234,6 @@
 Z_i \sim Q_i(dz_i | x_i, z_{1:i-1})
 \end{equation}
 شرط اساسی محرمانگی در اینجا این است که با شرطی‌سازی روی $X_i$ و $Z_{1:i-1}$، متغیر $Z_i$ باید از سایر داده‌های خصوصی $X_{j \neq i}$ مستقل باشد (شرط مارکوفی). این ساختار به پروتکل اجازه می‌دهد تا پارامترهای پرس‌وجو را به صورت پویا بر اساس اطلاعات کسب‌شده از کاربران قبلی تنظیم کند.
-
-
 
 \subsection{قضیه ترکیب ترتیبی}
 یکی از ویژگی‌های بنیادین \lr{LDP}، پایداری آن در برابر ترکیب است. اگر یک پروتکل شامل چندین مرحله‌ی تعاملی باشد، بودجه‌های محرمانگی با یک‌دیگر جمع می‌شوند. قضیه‌ی زیر، کران بالای محرمانگی را برای یک پروتکل ترتیبی بیان می‌کند \cite{Duchi2013}.
@@ -143,6 +253,7 @@ Z_i \sim Q_i(dz_i | x_i, z_{1:i-1})
 \]
 از آن‌جا که هر گام طبق فرض با $e^{\al_i}$ کران‌دار است، کل حاصل‌ضرب با $e^{\sum \al_i}$ کران‌دار خواهد بود.
 \end{اثبات}
+
 
 \section{مکانیزم‌های پایه در \lr{LDP}}
 \label{sec:ldp:mechanisms}
@@ -265,7 +376,7 @@ p = \frac{e^\al}{e^\al + k - 1}, \quad q = \frac{1}{e^\al + k - 1}
 
 \textbf{اثبات \LDP:}
 برای بررسی شرط \LDP، نسبت احتمال خروجی برداری $z = (z_1, \dots, z_k)$ را برای دو ورودی متمایز $x$ و $x'$ محاسبه می‌کنیم. بردارهای متناظر $v$ و $v'$ تنها در دو موقعیت تفاوت دارند: موقعیت $x$ (که $v_x=1, v'_x=0$) و موقعیت $x'$ (که $v_{x'}=0, v'_{x'}=1$). در سایر موقعیت‌ها ($j \neq x, x'$) بیت‌ها یکسان و برابر صفر هستند و در نسبت احتمالات ساده می‌شوند.
-از آنجا که بیت‌ها مستقل هستند:
+از آن‌جا که بیت‌ها مستقل هستند:
 \begin{equation}
 \frac{\mathbb{P}\left[z|x\right]}{\mathbb{P}\left[z|x'\right]} = \frac{\mathbb{P}\left[z_x|v_x=1\right]}{\mathbb{P}\left[z_x|v'_x=0\right]} \cdot \frac{\mathbb{P}\left[z_{x'}|v_{x'}=0\right]}{\mathbb{P}\left[z_{x'}|v'_{x'}=1\right]}
 \end{equation}
@@ -364,6 +475,40 @@ f(z|x) = \frac{\al}{4} \exp\left( -\frac{\al |z-x|}{2} \right)
     \item واریانس خطا برابر است با $2b^2 = 8$. این واریانس برای یک مقدار در بازه $[-1, 1]$ بسیار زیاد است و نشان می‌دهد که \lr{LDP} برای داده‌های عددی تک‌بعدی خطای زیادی تحمیل می‌کند مگر اینکه $n$ (تعداد کاربران) بسیار زیاد باشد.
 \end{itemize}
 \end{مثال}
+\subsection{مکانیزم تخمین میانگین دوچی (۱-بیتی)}
+\label{sec:duchi-mechanism}
+
+همان‌طور که در مثال قبل دیدیم، مکانیزم لاپلاس به دلیل دامنه‌ی نامتناهی خروجی، واریانس قابل توجهی را تحمیل می‌کند. برای حل این مشکل در داده‌های کران‌دار (مثلاً $[-1, 1]$)، دوچی و همکاران \cite{duchi2018} یک مکانیزم بهینه ارائه کردند که خروجی را به شدت کوانتیده (باینری) می‌کند.
+
+این مکانیزم که به «مکانیزم ۱-بیتی» نیز شهرت دارد، ورودی پیوسته $x \in [-1, 1]$ را به یک متغیر تصادفی $z \in \{-B, +B\}$ تبدیل می‌کند، به طوری که نااریب باقی بماند ($\Eset[z]=x$).
+
+\begin{algorithm}
+\caption{مکانیزم ۱-بیتی دوچی}
+\label{alg:duchi}
+\begin{algorithmic}[1]
+\State \textbf{ورودی:} داده کاربر $x \in [-1, 1]$ و بودجه محرمانگی \al.
+\State \textbf{گام ۱ (کوانتزاسیون):} متغیر تصادفی برنولی $u$ را تولید کنید:
+\begin{equation}
+u = \begin{cases}
+1 & \text{با احتمال } \frac{1+x}{2} \\
+-1 & \text{با احتمال } \frac{1-x}{2}
+\end{cases}
+\end{equation}
+\State \textbf{گام ۲ (اختلال):} مقدار $u$ را با مکانیزم \lr{RR} مخدوش کنید تا $z'$ به دست آید (با احتمال $\frac{e^\al}{e^\al+1}$ خود $u$ و با احتمال مکمل، قرینه‌ی آن).
+\State \textbf{گام ۳ (تجمیع):} خروجی نهایی $z$ را مقیاس‌دهی کنید:
+\begin{equation}
+z = z' \cdot \frac{e^\al+1}{e^\al-1}
+\end{equation}
+\State \textbf{خروجی:} مقدار $z$.
+\end{algorithmic}
+\end{algorithm}
+
+\textbf{تحلیل واریانس:}
+اگرچه این مکانیزم اطلاعات را به شدت فشرده (۱ بیت) می‌کند، اما دوچی ثابت کرد که این روش از نظر نرخ مینیماکس برای تخمین میانگین بهینه است. واریانس آن برابر است با:
+\begin{equation}
+\mathrm{Var}_{Duchi} \le \left( \frac{e^\al+1}{e^\al-1} \right)^2 \approx \mathcal{O}\left( \frac{1}{\al^2} \right)
+\end{equation}
+مزیت اصلی این روش نسبت به لاپلاس، کران‌دار بودنِ قطعیِ خروجی است که در تحلیل‌های بدترین حالت\LTRfootnote{Worst-case} اهمیت زیادی دارد.
 
 \subsection*{چالش ابعاد بالا (نفرین ابعاد)}
 
@@ -420,7 +565,7 @@ p = \frac{1}{n} \sum_{i=1}^n X_i
 \begin{equation}
 \mathrm{Var}[\hat{X}_i] \approx \frac{1}{\al^2}
 \end{equation}
-متصدی برای تخمین میانگین کل، میانگین گزارش‌های دریافتی را محاسبه می‌کند: $\hat{p}_{LDP} = \frac{1}{n} \sum_{i=1}^n \hat{X}_i$. از آنجا که نویز کاربران مستقل از یکدیگر است، واریانس مجموع برابر با مجموع واریانس‌هاست:
+متصدی برای تخمین میانگین کل، میانگین گزارش‌های دریافتی را محاسبه می‌کند: $\hat{p}_{LDP} = \frac{1}{n} \sum_{i=1}^n \hat{X}_i$. از آن‌جا که نویز کاربران مستقل از یکدیگر است، واریانس مجموع برابر با مجموع واریانس‌هاست:
 \begin{equation}
 \label{eq:ldp-error}
 \mathrm{MSE}_{LDP} = \mathrm{Var}\left[ \frac{1}{n} \sum_{i=1}^n \hat{X}_i \right] = \frac{1}{n^2} \sum_{i=1}^n \mathrm{Var}[\hat{X}_i] = \frac{1}{n^2} \cdot n \cdot \mathcal{O}\left(\frac{1}{\al^2}\right) = \mathcal{O}\left( \frac{1}{n \al^2} \right)
