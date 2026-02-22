@@ -4,18 +4,48 @@
 % -------------------------------------------------------
 
 \begin{latin}
-
 \begin{center}
-\textbf{Abstract}
+    \textbf{Abstract}
 \end{center}
-\baselineskip=.8\baselineskip
 
-We present a standard template for typesetting theses in Persian. 
-The template is based on the \XePersian\ package for the \LaTeX\ typesetting system.
-This write-up shows a sample usage of this template.
+The Differential Privacy framework, serving as the gold standard for data 
+protection, provides a strong mathematical guarantee ensuring that the output 
+of algorithms does not exhibit meaningful sensitivity to the presence or absence 
+of a specific individual's data. However, the standard centralized model of this 
+framework requires the aggregation of raw data by an intermediary entity. The 
+Local Differential Privacy (LDP) framework was developed to eliminate this 
+reliance; in this model, data is perturbed with noise on the user's side prior 
+to aggregation. Nevertheless, resolving the trust issue leads to another 
+fundamental challenge: a severe degradation in statistical utility, such that 
+the sample complexity increases from $\mathcal{O}(n)$ in the centralized model 
+to approximately $\mathcal{O}(n^2)$ in the local model.
 
+The central question is whether this substantial drop in accuracy constitutes 
+an inherent limitation or stems from the shortcomings of current algorithms. 
+To address this question, this thesis presents an analytical survey of the 
+leading literature in this domain. Two complementary approaches are studied 
+and integrated: first, the statistical minimax theory framework based on the 
+works of Duchi, Jordan, and Wainwright, which establishes lower bounds on 
+estimation error using tools such as Assouad's Lemma and Fano's Inequality; 
+second, the information geometry framework based on the works of Asoodeh et 
+al., which interprets local mechanisms as \textit{information contraction 
+channels}.
 
-\bigskip\noindent\textbf{Keywords}:
-Thesis, Typesetting, Template, \XePersian\
+This dissertation demonstrates that the Local Differential Privacy constraint 
+is equivalent to the contraction of $f$-divergences, and exploits this 
+equivalence to derive precise contraction coefficients for the Chi-squared, 
+Kullback--Leibler, and Hockey-Stick divergences. Combining these coefficients 
+with classical tools from statistical decision theory yields minimax lower 
+bounds in a unified and coherent manner, and explicitly establishes that the 
+degradation of the convergence rate to $\mathcal{O}\!\left(\frac{1}{\sqrt{n}}\right)$ 
+is an unavoidable information-theoretic and geometric barrier. This framework 
+provides a rigorous benchmark for evaluating the optimality of future 
+algorithms in the domain of data privacy.
+
+\vspace{2em}
+\noindent\textbf{Keywords:} Local Differential Privacy, Statistical Minimax 
+Theory, $f$-Divergences, Strong Data Processing Inequalities, 
+Privacy--Accuracy Trade-off
+
 
 \end{latin}

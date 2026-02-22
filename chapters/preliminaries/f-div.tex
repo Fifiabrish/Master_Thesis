@@ -190,6 +190,9 @@ D_\infty(P \| Q) = \lim_{\alpha \to \infty} D_\alpha(P \| Q) = \sup_{x \in \Xset
 \textbf{کاربرد در حریم خصوصی:}
     شرط \DP (خالص) دقیقاً معادل است با کران‌دار بودن این واگرایی توسط بودجه حریم خصوصی: $D_\infty(P \| Q) \le \eps$.
 
+
+
+
 \end{تعریف}
 \subsection{خواص بنیادین و روابط بین $f$-واگرایی‌ها}
 \label{sec:bg:f-div-properties}
@@ -242,3 +245,25 @@ D_f\left(\lambda P_1 + (1-\lambda)P_2 \| \lambda Q_1 + (1-\lambda)Q_2\right) \le
     \end{equation}
     اهمیت ریاضی این رابطه در آن است که اثبات قضایا و نامساوی‌ها را بسیار ساده می‌کند؛ اگر بتوانیم یک ویژگی (مانند کران‌دار بودن یا تحدب) را برای $E_\gamma$ اثبات کنیم، به دلیل مثبت بودن $f''$ (ناشی از تحدب $f$) و خطی بودن انتگرال، آن ویژگی به صورت خودکار برای تقریباً تمام خانواده‌ی $f$-واگرایی‌ها (شامل \lr{KL}، $\chi^2$ و هلینگر) تعمیم می‌یابد.
 \end{itemize}
+
+
+\begin{table}[htbp]
+    \centering
+    \caption{خانواده $f$-واگرایی‌ها و توابع مولد آن‌ها }
+    \label{tab:f-divergences-summary}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{نام واگرایی} & \textbf{تابع مولد $f(t)$} & \textbf{نماد ریاضی}\\
+        % & \textbf{کاربرد در نظریه حریم خصوصی} \\
+        \hline
+        کالبک-لیبلر (\lr{KL}) & $t \log t$ & ${\KL}\left( P \| Q \right)$ \\
+        % & نامساوی پینسکر و اعمال در نامساوی فانو \\
+        کای-دو (\lr{$\chi^2$}) & $\left( t - 1 \right)^2$ & $D_{\chi^2}\left( P \| Q \right)$ \\
+        % & روش لکام و تحلیل کانال‌های انقباضی \\
+        تغییرات کل (\lr{TV}) & $\frac{1}{2} \left| t - 1 \right|$ & ${\TV}\left( P \| Q \right)$ \\
+        % & تعیین کران پایین برای خطای آزمون فرض \\
+        هاکی-استیک & $\max\left\{ 0, t - e^\eps \right\}$ & $E_{e^\eps}\left( P \| Q \right)$ \\
+        % & تحلیل مستقیم توزیع‌ها در شرایط محرمانگی موضعی \\
+        \hline
+    \end{tabular}
+\end{table}
