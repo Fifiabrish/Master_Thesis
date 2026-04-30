@@ -99,7 +99,7 @@ BoldFont=Sharif1.3-SemiBold,
 \SepMark{-}
 \renewcommand{\labelitemi}{$\small\bullet$}
 
-
+\setcounter{secnumdepth}{3}
 
 % -------------------- Environments --------------------
 
@@ -288,14 +288,14 @@ BoldFont=Sharif1.3-SemiBold,
 % استفاده: \DP یا \DP[k\epsilon] یا \DP[(\epsilon, \delta)]
 \NewDocumentCommand{\DP}{o}{%
   \IfValueTF{#1}%
-    {\lr{\ensuremath{#1}-DP}}%  <-- حالت با آرگومان
-    {\lr{$\eps$-DP}}%     <-- حالت بدون آرگومان (پیش‌فرض)
+    {\lr{\ensuremath{#1-}DP}}%  <-- حالت با آرگومان
+    {\lr{$\eps-$DP}}%     <-- حالت بدون آرگومان (پیش‌فرض)
 }
 
 \NewDocumentCommand{\LDP}{o}{%
   \IfValueTF{#1}%
-    {\lr{\ensuremath{#1}-LDP}}%  <-- حالت با آرگومان
-    {\lr{\al-LDP}}%     <-- حالت بدون آرگومان (پیش‌فرض)
+    {\lr{\ensuremath{#1-}LDP}}%  <-- حالت با آرگومان
+    {\lr{$\al-$LDP}}%     <-- حالت بدون آرگومان (پیش‌فرض)
 }
 
 % تعریف دستور برای نرم (Norm)
