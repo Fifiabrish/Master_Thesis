@@ -1,0 +1,169 @@
+\documentclass[10pt]{beamer}
+
+% Theme selection
+\usetheme{Madrid}
+\usecolortheme{seahorse} 
+
+% Required packages
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+% Xepersian must be the LAST package loaded
+\usepackage{xepersian}
+
+% Set the Persian font (Make sure this font is installed on your system or Overleaf)
+\settextfont{Yas} % می‌توانید این را به B Nazanin یا Vazirmatn تغییر دهید
+
+% Presentation Information
+\title[کران‌های محرمانگی تفاضلی موضعی]{کران‌های آماری و نظریه اطلاعاتی محرمانگی تفاضلی موضعی}
+\subtitle{(محرمانگی در یادگیری ماشین)}
+\author[فیروزه ابریشمی]{فیروزه ابریشمی}
+\institute[دانشگاه صنعتی شریف]{
+	دانشکده علوم ریاضی\\
+	دانشگاه صنعتی شریف\\
+	\medskip
+	\textit{استاد راهنما: آقای دکتر جواد ابراهیمی بروجنی}
+}
+\date{\today}
+
+\setbeamersize{text margin left=1cm, text margin right=1.cm}
+
+\begin{document}
+	
+	% اسلاید عنوان
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	\begin{frame}{عصر کلان‌داده و ضرورت محرمانگی}
+		\begin{itemize}
+			\item \textbf{دنیای داده‌محور:} تصمیم‌گیری‌های مدرن و الگوریتم‌های یادگیری ماشین به شدت به مجموعه‌داده‌های عظیم (کلان‌داده) وابسته‌اند.
+			
+			\pause
+			\vspace{0.25cm}
+			\item \textbf{آسیب‌پذیری اصلی:} داده‌های خامی که برای آموزش استفاده می‌شوند، اغلب حاوی اطلاعات شخصی بسیار حساس (مانند سوابق پزشکی) هستند.
+			
+			\pause
+			\vspace{0.25cm}
+			\item \textbf{ناکارآمدی گمنام‌سازی سنتی:} صرفاً حذف شناسه‌های مستقیم (مانند نام‌ها و کدهای ملی) اساساً ناکافی است. 
+			\begin{itemize}
+				\item دانش جانبی امکان \textit{حملات شناسایی مجدد} فاجعه‌باری را فراهم می‌کند
+				\\ (مانند داده‌های مسابقه نتفلیکس).
+			\end{itemize}
+			
+			\pause
+			\vspace{0.4cm}
+			\item \textbf{هدف نهایی:} چگونه می‌توانیم بدون نقض محرمانگی افراد شرکت‌کننده، سودمندی آماری معناداری از داده‌ها استخراج کنیم؟
+		\end{itemize}
+	\end{frame}
+	
+	
+	\begin{frame}{محرمانگی تفاضلی: شهود}
+		\begin{itemize}
+			\item \textbf{تضمین معنایی:} خروجی یک الگوریتم باید فارغ از حضور یا عدم حضور هر فرد خاصی در مجموعه‌داده، تقریباً یکسان بماند.
+			\vspace{0.3cm}
+			% \item \textbf{شهود هندسی (انقباض):} مکانیزم مانند فیلتری عمل می‌کند که فاصله آماری بین توزیع‌های خروجی را \textit{منقبض} کرده و آن‌ها را غیرقابل تشخیص می‌سازد.
+			\pause
+			\vspace{0.7cm}
+			\item \textbf{پایگاه‌های داده مجاور:} دو پایگاه داده (مجموعه‌داده) $\mathcal{D}$ و $\mathcal{D}'$ مجاور هستند ($\mathcal{D} \sim \mathcal{D}'$) 
+			اگر دقیقاً در یک رکورد تفاوت داشته باشند ($||\mathcal{D} - \mathcal{D}'||_1 \le 1$).
+			
+			\pause
+			
+			\vspace{0.5cm}
+			مثال: یک مجموعه‌داده شامل قد افراد را در نظر بگیرید:
+			
+			\begin{itemize}
+				\vspace{0.2cm}
+				\item \textbf{پایگاه داده $\mathcal{D}_1$:} $\{170, 165, \mathbf{175}, 182\}$
+				\item \textbf{پایگاه داده $\mathcal{D}_2$:} $\{170, 165, 182\}$
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{محرمانگی تفاضلی: تعریف ریاضی}
+		\begin{itemize}
+			\item \textbf{تعریف رسمی ($(\varepsilon, \delta)$-DP):} یک مکانیزم تصادفی‌شده $\mathcal{M}: \mathcal{P}(\mathcal{X}) \rightarrow \mathcal{R}$ شرایط $(\varepsilon, \delta)$-محرمانگی تفاضلی را فراهم می‌کند، اگر برای تمام پایگاه‌های داده مجاور $\mathcal{D} \sim \mathcal{D}'$ \\ و تمام $S \subset \mathcal{R}$ داشته باشیم:
+			\vspace{0.2cm}
+			\begin{block}{}
+				
+				\begin{equation*}
+					\mathbb{P}[\mathcal{M}(\mathcal{D}) \in S] \le e^\varepsilon \cdot \mathbb{P}[\mathcal{M}(\mathcal{D}') \in S] + \delta
+				\end{equation*}
+				
+			\end{block}
+			\pause
+			\vspace{0.2cm}
+			\item \textbf{بودجه محرمانگی ($\varepsilon \geq 0$):} پارامتری که میزان سخت‌گیری محرمانگی را کنترل می‌کند ($\varepsilon$ کوچکتر $\Rightarrow$ محرمانگی قوی‌تر، نویز بیشتر).
+			\item \textbf{احتمال شکست ($\delta \in [0,1)$) :} احتمال بسیار ناچیزی که در آن تضمین سخت‌گیرانه $\varepsilon$-DP برقرار نباشد.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{شهود هندسی: محرمانگی تفاضلی به عنوان انقباض اطلاعات}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.9, transform shape]
+				% Input Space (Datasets)
+				\draw[thick, fill=blue!5, rounded corners=10pt] (-5,-2.5) rectangle (0,2.5);
+				\node[font=\bfseries] at (-2.5, 2.8) {\rl{فضای ورودی $(\mathcal{X}^n)$}};
+				
+				\filldraw[black] (-2.5, 1.5) circle (2pt) node[above] {$\mathcal{D}$};
+				\filldraw[black] (-2.5, -1.5) circle (2pt) node[below] {$\mathcal{D}'$};
+				
+				% Distance in input space
+				\draw[<->, dashed, thick] (-2.5, 1.3) -- (-2.5, -1.3) node[midway, right] {$||\mathcal{D} - \mathcal{D}'||_1 = 1$};
+				
+				% Output Space (Probability Distributions)
+				\draw[thick, fill=green!5, rounded corners=10pt] (2,-2.5) rectangle (7,2.5);
+				\node[font=\bfseries] at (4.5, 2.8) {\rl{فضای خروجی (توزیع‌ها)}};
+				
+				% Distributions overlapping (Contraction)
+				\draw[thick, blue, fill=blue!20, opacity=0.6] (4, 0) ellipse (1.5cm and 1cm);
+				\node[blue!80!black, font=\bfseries] at (3.3, 0.3) {$\mathcal{M}(\mathcal{D})$};
+				
+				\draw[thick, red, fill=red!20, opacity=0.6] (5, 0) ellipse (1.5cm and 1cm);
+				\node[red!80!black, font=\bfseries] at (5.7, -0.3) {$\mathcal{M}(\mathcal{D}')$};
+				
+				% Contracted Distance
+				% \draw[<->, dashed, thick, draw=black!70] (4, -1.2) -- (5, -1.2) node[midway, below];
+				% {$D_f \approx 0$};
+				
+				% Mapping arrows (Mechanism M)
+				\draw[->, thick, draw=black!80, shorten >=5pt, shorten <=5pt] (-2.3, 1.5) to[out=20, in=150] node[above] {$\mathcal{M}$} (4, 1);
+				\draw[->, thick, draw=black!80, shorten >=5pt, shorten <=5pt] (-2.3, -1.5) to[out=-20, in=-150] node[below] {$\mathcal{M}$} (5, -1);
+				
+				% Shrinking visual effect
+				% \node[font=\bfseries\Large, text=orange!90!black] at (0, 0) {\textbf{انقباض}};
+			\end{tikzpicture}
+		\end{center}
+		% \pause
+		\vspace{0.3cm}
+		\begin{itemize}
+			% \item \textbf{بینش کلیدی:} مکانیزم تصادفی‌شده $\mathcal{M}$ به عنوان یک هسته مارکوف عمل می‌کند که فاصله آماری بین ورودی‌ها را \textit{منقبض} می‌کند (بسته به سطح محرمانگی)، و توزیع‌های خروجی آن‌ها را مجبور به هم‌پوشانی می‌کند.
+			\item مکانیزم مانند فیلتری عمل می‌کند که فاصله آماری بین توزیع‌های خروجی را \textit{منقبض} کرده و آن‌ها را غیرقابل تشخیص می‌سازد.
+		\end{itemize}
+		
+	\end{frame}
+	
+	\begin{frame}{مدل محلی: حذف متولی مورد اعتماد}
+		\begin{itemize}
+			\item \textbf{چالش محرمانگی تفاضلی مرکزی:}   
+			\begin{itemize}
+				\item برای جمع‌آوری داده‌های خام، کاملاً به یک \textit{متولی مورد اعتماد} وابسته است.
+				\item یک نقطه شکست واحد ایجاد می‌کند (آسیب‌پذیر در برابر نشت داده‌ها، تهدیدات داخلی و احضاریه‌های قانونی).
+			\end{itemize}
+			
+			\pause
+			\vspace{0.4cm}
+			\item \textbf{محرمانگی تفاضلی محلی \lr{(LDP)}:}
+			\begin{itemize}
+				\item مرز اعتماد را مستقیماً به دستگاه کاربر منتقل می‌کند.
+				\item کاربران داده‌های خود را \textit{پیش از} ارسال به سرور، به‌صورت محلی آشفته می‌سازند.
+			\end{itemize}
+		\end{itemize}      
+	\end{frame}
+	
+	
+\end{document}
